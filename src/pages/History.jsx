@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Container, NoVideosFound, VideoList } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getWatchHistory } from "../store/Slices/userSlice";
+import { getWatchHistory } from "../Store/Slices/userSlice";
 import HomeSkeleton from "../skeleton/HomeSkeleton";
 
 function History() {

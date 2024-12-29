@@ -11,7 +11,7 @@ import {
     UploadVideo,
 } from "../components"
 import { useDispatch, useSelector } from "react-redux";
-import { getChannelStats, getChannelVideos } from "../store/Slices/dashboard";
+import { getChannelStats, getChannelVideos } from "../Store/Slices/dashboard";
 import { deleteAVideo } from "../Store/Slices/videoSlice";
 
 function AdminDashboard() {
