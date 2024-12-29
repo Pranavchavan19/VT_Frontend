@@ -1,7 +1,7 @@
 import React , {useState} from "react";
 import { timeAgo} from "../helpers/timeAgo";
 import { useSelector , useDispatch} from "react-redux";
-import { Like, DeleteConfirmation, Edit } from "./Index.js";
+import { Like, DeleteConfirmation, Edit } from "./index.js";
 import { HiOutlineDotsVertical } from "./icons";
 import { deleteAComment, editAComment } from "../Store/Slices/commentSlice";
 

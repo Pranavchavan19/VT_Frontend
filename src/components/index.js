@@ -13,7 +13,7 @@ import TweetAndComment from "./TweetAndComment";
 import Video from "./Video"
 import CommentList from "./CommentList.jsx"
 import ChannelNavigate from "../components/channel/ChannelNavigate"
-import Edit from "./Edit"
+import Edit from "./Edit.jsx"
 import DeleteConfirmation from "./DeleteConfirmation"
 import Like from "./Like"
 import Description from "./Description"
