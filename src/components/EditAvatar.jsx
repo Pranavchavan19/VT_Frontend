@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdClose, MdOutlineCloudUpload } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { updateAvatar, updateCoverImg } from "../store/Slices/authSlice";
+import { updateAvatar, updateCoverImg } from "../Store/Slices/authSlice";
 import GetImagePreview from "./GetImagePreview";
 
 function EditAvatar({ cover, preImage }) {

@@ -7,7 +7,7 @@ import {
     toggleCommentLike,
     toggleTweetLike,
     toggleVideoLike,
-} from "../store/Slices/likeSlice";
+} from "../Store/Slices/likeSlice";
 
 function Like({isLiked, likesCount =0, tweetId, commentId, videoId, size}){
 

@@ -1,6 +1,6 @@
 import React , {useState} from "react";
 import { timeAgo } from "../helpers/timeAgo";
-import { Like, Button } from "./Index.js";
+import { Like, Button } from "./index.js";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom"
 import { toggleSubscription} from "../Store/Slices/subscriptionSlice"
