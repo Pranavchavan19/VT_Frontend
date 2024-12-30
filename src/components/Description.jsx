@@ -125,18 +125,31 @@ function Description({
     videoId,
     channelId,
 }) {
-    const [localIsSubscribed, setlocalIsSubscribed] = useState(isSubscribed);
-    const [localSubscribersCount, setlocalSubscribersCount] = useState(subscribersCount);
+    const [localIsSubscribed, setLocalIsSubscribed] = useState(isSubscribed);
+    const [localSubscribersCount, setLocalSubscribersCount] = useState(subscribersCount);
     const dispatch = useDispatch();
 
     const handleSubscribe = async () => {
-        // Dispatch the toggle subscription action and wait for the result
-        const result = await dispatch(toggleSubscription(channelId));
+        try {
+            // Dispatch toggle subscription and await the result
+            const result = await dispatch(toggleSubscription(channelId));
 
-        // If subscription was successful, update the local state accordingly
-        if (result.payload) {
-            setlocalIsSubscribed((prev) => !prev);
-            setlocalSubscribersCount((prev) => (localIsSubscribed ? prev - 1 : prev + 1));
+            // Ensure the subscription toggle happened successfully
+            if (result.payload) {
+                // Toggle the local subscription state
+                setLocalIsSubscribed((prev) => !prev);
+
+                // Update the subscriber count accordingly
+                if (localIsSubscribed) {
+                    // If it was already subscribed, unsubscribe (decrement)
+                    setLocalSubscribersCount((prev) => prev - 1);
+                } else {
+                    // If not subscribed, subscribe (increment)
+                    setLocalSubscribersCount((prev) => prev + 1);
+                }
+            }
+        } catch (error) {
+            console.error("Error in subscription toggle:", error);
         }
     };
 
