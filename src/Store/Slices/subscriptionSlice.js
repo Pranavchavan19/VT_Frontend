@@ -97,10 +97,124 @@
 
 // export default subscriptionSlice.reducer;
 
+
+
+
+
+
+
+
+
+// import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+// import axiosInstance from "../../helpers/axiosInstance";
+// import toast from "react-hot-toast";
+
+// const initialState = {
+//     loading: false,
+//     subscribed: null,
+//     channelSubscribers: [],
+//     mySubscriptions: [],
+// };
+
+// export const toggleSubscription = createAsyncThunk(
+//     "toggleSubscription",
+//     async (channelId) => {
+//         try {
+//             const response = await axiosInstance.post(
+//                 `subscriptions/c/${channelId}`
+//             );
+//             return response.data.data.subscribed;
+//         } catch (error) {
+//             toast.error(error?.response?.data?.error);
+//             throw error;
+//         }
+//     }
+// );
+
+// export const getUserChannelSubscribers = createAsyncThunk(
+//     "getUserChannelSubscribers",
+//     async (channelId) => {
+//         try {
+//             const response = await axiosInstance.get(
+//                 `subscriptions/c/${channelId}`
+//             );
+//             return response.data.data;
+//         } catch (error) {
+//             toast.error(error?.response?.data?.error);
+//             throw error;
+//         }
+//     }
+// );
+
+// export const getSubscribedChannels = createAsyncThunk(
+//     "getSubscribedChannels",
+//     async (subscriberId) => {
+//         try {
+//             const response = await axiosInstance.get(
+//                 `subscriptions/u/${subscriberId}`
+//             );
+//             return response.data.data;
+//         } catch (error) {
+//             return error;
+//         }
+//     }
+// );
+
+// const subscriptionSlice = createSlice({
+//     name: "subscription",
+//     initialState,
+//     reducers: {},
+//     extraReducers: (builder) => {
+//         builder.addCase(toggleSubscription.pending, (state) => {
+//             state.loading = true;
+//         });
+//         builder.addCase(toggleSubscription.fulfilled, (state, action) => {
+//             state.loading = false;
+//             state.subscribed = action.payload;
+//         });
+//         builder.addCase(getUserChannelSubscribers.pending, (state) => {
+//             state.loading = true;
+//         });
+//         builder.addCase(
+//             getUserChannelSubscribers.fulfilled,
+//             (state, action) => {
+//                 state.loading = false;
+//                 state.channelSubscribers = action.payload;
+//             }
+//         );
+//         builder.addCase(getSubscribedChannels.pending, (state) => {
+//             state.loading = true;
+//         });
+//         builder.addCase(getSubscribedChannels.fulfilled, (state, action) => {
+//             state.loading = false;
+//             state.mySubscriptions = action.payload.filter(
+//                 (subscription) => subscription?.subscribedChannel?.latestVideo
+//             );
+//         });
+//     },
+// });
+
+// export default subscriptionSlice.reducer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../helpers/axiosInstance";
 import toast from "react-hot-toast";
 
+// Initial State
 const initialState = {
     loading: false,
     subscribed: null,
@@ -108,13 +222,14 @@ const initialState = {
     mySubscriptions: [],
 };
 
+// Async Thunks
 export const toggleSubscription = createAsyncThunk(
-    "toggleSubscription",
-    async (channelId) => {
+    "subscription/toggleSubscription",
+    async (channelId, { dispatch }) => {
         try {
-            const response = await axiosInstance.post(
-                `subscriptions/c/${channelId}`
-            );
+            const response = await axiosInstance.post(`subscriptions/c/${channelId}`);
+            // Once toggled, update the subscriber count
+            dispatch(updateSubscriberCount({ subscriberId: channelId, increment: response.data.data.subscribed }));
             return response.data.data.subscribed;
         } catch (error) {
             toast.error(error?.response?.data?.error);
@@ -124,12 +239,10 @@ export const toggleSubscription = createAsyncThunk(
 );
 
 export const getUserChannelSubscribers = createAsyncThunk(
-    "getUserChannelSubscribers",
+    "subscription/getUserChannelSubscribers",
     async (channelId) => {
         try {
-            const response = await axiosInstance.get(
-                `subscriptions/c/${channelId}`
-            );
+            const response = await axiosInstance.get(`subscriptions/c/${channelId}`);
             return response.data.data;
         } catch (error) {
             toast.error(error?.response?.data?.error);
@@ -139,12 +252,10 @@ export const getUserChannelSubscribers = createAsyncThunk(
 );
 
 export const getSubscribedChannels = createAsyncThunk(
-    "getSubscribedChannels",
+    "subscription/getSubscribedChannels",
     async (subscriberId) => {
         try {
-            const response = await axiosInstance.get(
-                `subscriptions/u/${subscriberId}`
-            );
+            const response = await axiosInstance.get(`subscriptions/u/${subscriberId}`);
             return response.data.data;
         } catch (error) {
             return error;
@@ -152,10 +263,26 @@ export const getSubscribedChannels = createAsyncThunk(
     }
 );
 
+// Slice
 const subscriptionSlice = createSlice({
     name: "subscription",
     initialState,
-    reducers: {},
+    reducers: {
+        updateSubscriberCount: (state, action) => {
+            const { subscriberId, increment } = action.payload;
+            const subscriber = state.channelSubscribers.find(
+                (sub) => sub?.subscriber?._id === subscriberId
+            );
+
+            if (subscriber) {
+                if (increment) {
+                    subscriber.subscriber.subscribersCount += 1;
+                } else {
+                    subscriber.subscriber.subscribersCount -= 1;
+                }
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(toggleSubscription.pending, (state) => {
             state.loading = true;
@@ -167,13 +294,10 @@ const subscriptionSlice = createSlice({
         builder.addCase(getUserChannelSubscribers.pending, (state) => {
             state.loading = true;
         });
-        builder.addCase(
-            getUserChannelSubscribers.fulfilled,
-            (state, action) => {
-                state.loading = false;
-                state.channelSubscribers = action.payload;
-            }
-        );
+        builder.addCase(getUserChannelSubscribers.fulfilled, (state, action) => {
+            state.loading = false;
+            state.channelSubscribers = action.payload;
+        });
         builder.addCase(getSubscribedChannels.pending, (state) => {
             state.loading = true;
         });
@@ -186,4 +310,5 @@ const subscriptionSlice = createSlice({
     },
 });
 
+export const { updateSubscriberCount } = subscriptionSlice.actions;
 export default subscriptionSlice.reducer;
