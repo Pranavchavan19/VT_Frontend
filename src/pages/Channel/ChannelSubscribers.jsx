@@ -64,7 +64,7 @@ function ChannelSubscribers() {
                             }
                         >
                             {subscriber?.subscriber?.subscribedToSubscriber
-                                ? "Subscribed"
+                                ? "UnSubscribe"
                                 : "Subscribe"}
                         </Button>
                     </div>
