@@ -82,7 +82,7 @@ function Description ({
                                   onClick={handleSubscribe}
                                   className="border-slate-500 hover:scale-110 transition-all text-black font-bold px-4 py-1 bg-purple-500"
                                >
-                                 {localIsSubscribed ? "Subscribed" :"Subscribe"}
+                                 {localIsSubscribed ? "UnSubscribe" :"Subscribe"}
                                </Button>
                             </div>
                          </div>
