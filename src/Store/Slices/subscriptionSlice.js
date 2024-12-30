@@ -116,20 +116,35 @@ const initialState = {
     mySubscriptions: [],
 };
 
+// export const toggleSubscription = createAsyncThunk(
+//     "toggleSubscription",
+//     async (channelId) => {
+//         try {
+//             const response = await axiosInstance.post(
+//                 `subscriptions/c/${channelId}`
+//             );
+//             return response.data.data.subscribed;
+//         } catch (error) {
+//             toast.error(error?.response?.data?.error);
+//             throw error;
+//         }
+//     }
+// );
+
 export const toggleSubscription = createAsyncThunk(
     "toggleSubscription",
-    async (channelId) => {
-        try {
-            const response = await axiosInstance.post(
-                `subscriptions/c/${channelId}`
-            );
-            return response.data.data.subscribed;
-        } catch (error) {
-            toast.error(error?.response?.data?.error);
-            throw error;
-        }
+    async (channelId, { rejectWithValue }) => {
+      try {
+        const response = await axiosInstance.post(`subscriptions/c/${channelId}`);
+        return response.data.data; // The updated subscription state should be returned
+      } catch (error) {
+        return rejectWithValue(error.response?.data?.error || "Subscription failed");
+      }
     }
-);
+  );
+  
+
+
 
 export const getUserChannelSubscribers = createAsyncThunk(
     "getUserChannelSubscribers",
