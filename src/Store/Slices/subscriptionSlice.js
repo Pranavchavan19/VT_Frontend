@@ -134,14 +134,15 @@ const initialState = {
 export const toggleSubscription = createAsyncThunk(
     "toggleSubscription",
     async (channelId, { rejectWithValue }) => {
-      try {
-        const response = await axiosInstance.post(`subscriptions/c/${channelId}`);
-        return response.data.data; // The updated subscription state should be returned
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.error || "Subscription failed");
-      }
+        try {
+            const response = await axiosInstance.post(`subscriptions/c/${channelId}`);
+            return response.data.data; // Ensure this returns the updated subscription state (success or failure)
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.error || "Subscription failed");
+        }
     }
-  );
+);
+
   
 
 
