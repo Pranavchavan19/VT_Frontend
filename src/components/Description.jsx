@@ -183,7 +183,7 @@ function Description({
                                     <h1 className="font-semibold">
                                         {channelName}
                                     </h1>
-                                    <p className="text-xs text-red-700">
+                                    <p className="text-xs text-green-700">
                                         {localSubscribersCount} Subscribers
                                     </p>
                                 </div>
