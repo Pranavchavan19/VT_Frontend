@@ -32,7 +32,7 @@
 export default {
   server: {
     proxy: {
-      '/api': 'https://vt-backend.onrender.com', // Backend URL
+      '/api': 'https://vt-backend.onrender.com/api/v1', // Backend URL
     },
   },
 };
