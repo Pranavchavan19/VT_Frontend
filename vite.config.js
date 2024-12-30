@@ -29,11 +29,11 @@
 //     }
 //   }
 // })
+export default {
+  server: {
+    proxy: {
+      '/api': 'https://vt-backend.onrender.com', // Backend URL
+    },
+  },
+};
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-
-export default defineConfig({
-  base: './', // Use relative paths for assets
-  plugins: [react()],
-});
