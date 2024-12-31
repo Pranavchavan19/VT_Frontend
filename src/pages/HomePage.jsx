@@ -81,8 +81,7 @@
 
 
 
-
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllVideos, makeVideosNull } from "../Store/Slices/videoSlice.js";
 import VideoList from "../components/VideoList.jsx";
@@ -98,6 +97,9 @@ function HomePage() {
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [videoLoading, setVideoLoading] = useState({});  // Track loading state for each video
+
+    // Use refs to track the video elements
+    const videoRefs = useRef({});
 
     useEffect(() => {
         dispatch(getAllVideos({ page: 1, limit: 10 }));
@@ -170,11 +172,16 @@ function HomePage() {
 
                             {/* Video Element */}
                             <video
+                                ref={(el) => videoRefs.current[video._id] = el}
                                 width="600"
                                 controls
-                                style={{ display: videoLoading[video._id] ? 'none' : 'block' }}  // Hide video until it's ready
-                                onCanPlay={() => handleVideoLoad(video._id)}  // Mark as ready to play
-                                onPlay={() => handleVideoStart(video._id)}   // Start loading new video when clicked
+                                preload="auto"
+                                style={{
+                                    display: videoLoading[video._id] ? 'none' : 'block', // Hide until it's ready
+                                    visibility: videoLoading[video._id] ? 'hidden' : 'visible', // Ensure visibility control
+                                }}
+                                onCanPlay={() => handleVideoLoad(video._id)} // Mark as ready to play
+                                onPlay={() => handleVideoStart(video._id)} // Start loading the video
                             >
                                 <source src={video.videoUrl} type="video/mp4" />
                                 Your browser does not support the video tag.
