@@ -83,7 +83,6 @@
 
 
 
-
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllVideos, makeVideosNull } from "../Store/Slices/videoSlice.js";
@@ -100,8 +99,9 @@ function HomePage() {
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Track visibility state for videos
-    const [isVideoReady, setIsVideoReady] = useState({});
+    // Track currently playing video and preloading state
+    const [currentVideo, setCurrentVideo] = useState(null);
+    const [isVideoLoading, setIsVideoLoading] = useState(false);
 
     useEffect(() => {
         dispatch(getAllVideos({ page: 1, limit: 10 }));
@@ -129,20 +129,13 @@ function HomePage() {
         }
     }, [page, hasNextPage, dispatch]);
 
-    // Handle when video is ready to be shown
-    const handleVideoLoad = (videoId) => {
-        setIsVideoReady((prevState) => ({
-            ...prevState,
-            [videoId]: true, // Mark this video as ready
-        }));
+    const handleVideoClick = (videoId) => {
+        setCurrentVideo(videoId);  // Mark the clicked video to load
+        setIsVideoLoading(true);  // Indicate that video is loading
     };
 
-    // Handle when video starts to load
-    const handleVideoLoadStart = (videoId) => {
-        setIsVideoReady((prevState) => ({
-            ...prevState,
-            [videoId]: false, // Hide until the video is ready
-        }));
+    const handleCanPlay = () => {
+        setIsVideoLoading(false);  // Video is ready to be played
     };
 
     return (
@@ -170,19 +163,29 @@ function HomePage() {
                                 views={video.views}
                                 channelName={video.ownerDetails.username}
                                 videoId={video._id}
+                                onClick={() => handleVideoClick(video._id)}
                             />
+
+                            {/* Placeholder until the video is loaded */}
+                            <div
+                                className="video-placeholder"
+                                style={{
+                                    display: currentVideo === video._id && isVideoLoading ? "block" : "none",
+                                }}
+                            >
+                                <p>Loading...</p>
+                            </div>
 
                             {/* Video Element */}
                             <video
                                 width="600"
                                 controls
                                 style={{
-                                    display: isVideoReady[video._id] ? "block" : "none", // Show only if ready
-                                    opacity: isVideoReady[video._id] ? 1 : 0, // Fade in
-                                    transition: 'opacity 0.5s ease', // Smooth fade transition
+                                    display: currentVideo === video._id && !isVideoLoading ? "block" : "none", // Show only if video is ready
+                                    opacity: isVideoLoading ? 0 : 1, // Fade in video after it's ready
+                                    transition: "opacity 0.5s ease",
                                 }}
-                                onCanPlay={() => handleVideoLoad(video._id)} // Mark video as ready
-                                onPlay={() => handleVideoLoadStart(video._id)} // Mark video as starting to load
+                                onCanPlay={handleCanPlay} // Video is ready to be played
                             >
                                 <source src={video.videoUrl} type="video/mp4" />
                                 Your browser does not support the video tag.
