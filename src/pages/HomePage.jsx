@@ -84,7 +84,6 @@
 
 
 
-
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllVideos, makeVideosNull } from "../Store/Slices/videoSlice.js";
@@ -101,8 +100,8 @@ function HomePage() {
     const [page, setPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
 
-    // State to track which video is ready to play
-    const [readyVideo, setReadyVideo] = useState(null);
+    // Track visibility state for videos
+    const [isVideoReady, setIsVideoReady] = useState({});
 
     useEffect(() => {
         dispatch(getAllVideos({ page: 1, limit: 10 }));
@@ -130,8 +129,20 @@ function HomePage() {
         }
     }, [page, hasNextPage, dispatch]);
 
-    const handleCanPlay = (videoId) => {
-        setReadyVideo(videoId); // Mark this video as ready to play
+    // Handle when video is ready to be shown
+    const handleVideoLoad = (videoId) => {
+        setIsVideoReady((prevState) => ({
+            ...prevState,
+            [videoId]: true, // Mark this video as ready
+        }));
+    };
+
+    // Handle when video starts to load
+    const handleVideoLoadStart = (videoId) => {
+        setIsVideoReady((prevState) => ({
+            ...prevState,
+            [videoId]: false, // Hide until the video is ready
+        }));
     };
 
     return (
@@ -166,9 +177,12 @@ function HomePage() {
                                 width="600"
                                 controls
                                 style={{
-                                    display: readyVideo === video._id ? "block" : "none", // Hide until ready
+                                    display: isVideoReady[video._id] ? "block" : "none", // Show only if ready
+                                    opacity: isVideoReady[video._id] ? 1 : 0, // Fade in
+                                    transition: 'opacity 0.5s ease', // Smooth fade transition
                                 }}
-                                onCanPlay={() => handleCanPlay(video._id)} // Mark video as ready
+                                onCanPlay={() => handleVideoLoad(video._id)} // Mark video as ready
+                                onPlay={() => handleVideoLoadStart(video._id)} // Mark video as starting to load
                             >
                                 <source src={video.videoUrl} type="video/mp4" />
                                 Your browser does not support the video tag.
