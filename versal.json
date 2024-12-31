@@ -1,7 +1,8 @@
-
 {
-  "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/public/index.html" }
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
   ]
 }
