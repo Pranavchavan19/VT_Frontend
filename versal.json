@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://vt-backend.onrender.com/api/v1" },
+   
     { "source": "/(.*)", "destination": "/" }
   ]
 }

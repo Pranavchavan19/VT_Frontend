@@ -41,41 +41,19 @@
 // // };
 
 
-// import react from "@vitejs/plugin-react"
-// import { defineConfig } from "vite"
-
-// export default defineConfig({
-//   plugins: [react()],
-//   css: {
-//     minify: false,  // Disable minification in production
-//   },
-//   server: {
-//     proxy: {
-//       '/api': 'https://vt-backend.onrender.com/api/v1',
-//     }
-//   }
-// })
-
-
-
-
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [react()],
   css: {
-    minify: false, // Disable minification during production build (optional, for debugging styles)
+    minify: false,  // Disable minification in production
   },
   server: {
     proxy: {
-      // Proxy API requests to the backend
-      '/api': {
-        target: 'https://vt-backend.onrender.com/api/v1', // Your backend Render URL
-        changeOrigin: true, // Ensures the Origin header is updated to match the target
-        secure: true, // Set to false if your backend uses self-signed certificates
-        rewrite: (path) => path.replace(/^\/api/, ''), // Optional: Strips "/api" prefix if not needed
-      },
-    },
-  },
-});
+      '/api': 'https://vt-backend.onrender.com/api/v1',
+    }
+  }
+})
+
+
