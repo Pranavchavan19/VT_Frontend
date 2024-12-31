@@ -226,6 +226,7 @@
 
 
 
+
 import React, { useState } from "react";
 import { Search, Button, Logo, SearchForSmallScreen } from "../index.js";
 import { Link } from "react-router-dom";
@@ -235,6 +236,11 @@ import {
     CiSearch,
     HiOutlineVideoCamera,
     SlMenu,
+    IoFolderOutline,
+    RiHome6Line,
+    TbUserCheck,
+    BiHistory
+    
 } from "../icons.js";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -281,6 +287,26 @@ const Navbar = () => {
             icon: <IoMdSettings size={25} />,
             title: "Settings",
             url: `/settings`,
+        },
+        {
+            icon: <RiHome6Line size={25} />,
+            title: "Home",
+            url: "/",
+        },
+        {
+            icon: <BiHistory size={25} />,
+            title: "History",
+            url: "/history",
+        },
+        {
+            icon: <IoFolderOutline size={25} />,
+            title: "Collections",
+            url: "/collections",
+        },
+        {
+            icon: <TbUserCheck size={25} />,
+            title: "Subscriptions",
+            url: "/subscriptions",
         },
     ];
 
