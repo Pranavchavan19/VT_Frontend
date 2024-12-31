@@ -1,4 +1,8 @@
 {
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
   "headers": [
     {
       "source": "/(.*).(js|css|png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf|otf|ico|json|html)",
