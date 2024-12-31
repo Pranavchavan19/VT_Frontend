@@ -132,8 +132,8 @@ function Sidebar() {
             </div>
 
             {/* for mobile sidebar is bottom bar*/}
-            <div className="border-t-2 text-white h-16 sm:hidden z-20 p-1 w-full flex justify-around fixed bottom-0 bg-[#0E0F0F]">
-                {bottomBarItems.map((item) => (
+            <div className="border-t-2 text-white h-16 z-50 p-1 w-full flex justify-around fixed bottom-0 bg-[#0E0F0F]">
+            {bottomBarItems.map((item) => (
                     <NavLink
                         to={item.url}
                         key={item.title}

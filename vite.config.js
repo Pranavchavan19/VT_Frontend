@@ -46,6 +46,9 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [react()],
+  css: {
+    minify: false,  // Disable minification in production
+  },
   server: {
     proxy: {
       '/api': 'https://vt-backend.onrender.com/api/v1',
