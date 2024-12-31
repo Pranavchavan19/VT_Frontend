@@ -29,12 +29,28 @@
 //     }
 //   }
 // })
-export default {
+
+
+
+// export default {
+//   server: {
+//     proxy: {
+//       '/api': 'https://vt-backend.onrender.com/api/v1', // Backend URL
+//     },
+//   },
+// };
+
+
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
+
+export default defineConfig({
+  plugins: [react()],
   server: {
     proxy: {
-      '/api': 'https://vt-backend.onrender.com/api/v1', // Backend URL
-    },
-  },
-};
+      '/api': 'https://vt-backend.onrender.com/api/v1',
+    }
+  }
+})
 
 
