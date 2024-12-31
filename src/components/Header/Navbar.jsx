@@ -274,9 +274,9 @@ const Navbar = () => {
 
     const sidePanelItems = [
         {
-            icon: <BiLike size={25} />,
-            title: "Liked Videos",
-            url: "/liked-videos",
+            icon: <RiHome6Line size={25} />,
+            title: "Home",
+            url: "/",
         },
         {
             icon: <HiOutlineVideoCamera size={25} />,
@@ -284,15 +284,11 @@ const Navbar = () => {
             url: `/channel/${username}`,
         },
         {
-            icon: <IoMdSettings size={25} />,
-            title: "Settings",
-            url: `/settings`,
+            icon: <BiLike size={25} />,
+            title: "Liked Videos",
+            url: "/liked-videos",
         },
-        {
-            icon: <RiHome6Line size={25} />,
-            title: "Home",
-            url: "/",
-        },
+
         {
             icon: <BiHistory size={25} />,
             title: "History",
@@ -307,6 +303,11 @@ const Navbar = () => {
             icon: <TbUserCheck size={25} />,
             title: "Subscriptions",
             url: "/subscriptions",
+        },
+        {
+            icon: <IoMdSettings size={25} />,
+            title: "Settings",
+            url: `/settings`,
         },
     ];
 
