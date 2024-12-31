@@ -74,6 +74,7 @@ function Sidebar() {
         },
         
     ];
+    console.log(bottomBarItems);
 
     const logout = async () => {
          dispatch(userLogout());
@@ -152,6 +153,6 @@ function Sidebar() {
         </>
     );
 }
-console.log(bottomBarItems);
+
 
 export default Sidebar;
