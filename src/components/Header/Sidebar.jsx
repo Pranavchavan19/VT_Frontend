@@ -131,23 +131,24 @@ function Sidebar() {
                 </div>
             </div>
 
-            {/* for mobile sidebar is bottom bar*/}
-            <div className="border-t-2 text-white h-16 z-50 p-1 w-full flex justify-around fixed bottom-0 bg-[#0E0F0F]">
-            {bottomBarItems.map((item) => (
-                    <NavLink
-                        to={item.url}
-                        key={item.title}
-                        className={({ isActive }) =>
-                            isActive ? "text-purple-500" : ""
-                        }
-                    >
-                        <div className="flex flex-col items-center gap-1 cursor-pointer p-1">
-                            {item.icon}
-                            <span className="text-sm">{item.title}</span>
-                        </div>
-                    </NavLink>
-                ))}
+             {/* for mobile sidebar is bottom bar */}
+<div className="border-t-2 text-white h-16 z-20 p-1 w-full flex justify-around fixed bottom-0 bg-[#0E0F0F] sm:block lg:hidden">
+    {bottomBarItems.map((item) => (
+        <NavLink
+            to={item.url}
+            key={item.title}
+            className={({ isActive }) =>
+                isActive ? "text-purple-500" : ""
+            }
+        >
+            <div className="flex flex-col items-center gap-1 cursor-pointer p-1">
+                {item.icon}
+                <span className="text-sm">{item.title}</span>
             </div>
+        </NavLink>
+    ))}
+</div>
+
         </>
     );
 }
