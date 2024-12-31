@@ -132,7 +132,7 @@ function Sidebar() {
             </div>
 
              {/* for mobile sidebar is bottom bar */}
-<div className="border-t-2 text-white h-16 z-20 p-1 w-full flex justify-around fixed bottom-0 bg-[#0E0F0F] sm:block lg:hidden">
+<div className="border-t-2 text-white h-16 z-20 p-1 w-full flex justify-around fixed bottom-0 bg-[#0E0F0F] sm:block lg:hidden bg-red-500">
     {bottomBarItems.map((item) => (
         <NavLink
             to={item.url}
@@ -152,5 +152,6 @@ function Sidebar() {
         </>
     );
 }
+console.log(bottomBarItems);
 
 export default Sidebar;
