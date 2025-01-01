@@ -140,7 +140,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
     createAPlaylist,
     getPlaylistsByUser,
-} from "../../store/Slices/playlistSlice";
+} from "../../Store/Slices/playlistSlice";
 import { Button, Input } from "../../components";
 import { useForm } from "react-hook-form";
 import { IoCloseCircleOutline } from "../../components/icons";
