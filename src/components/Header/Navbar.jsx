@@ -239,7 +239,8 @@ import {
     IoFolderOutline,
     RiHome6Line,
     TbUserCheck,
-    BiHistory
+    BiHistory,
+    FaTwitter
     
 } from "../icons.js";
 import { useSelector, useDispatch } from "react-redux";
@@ -308,6 +309,11 @@ const Navbar = () => {
             icon: <IoMdSettings size={25} />,
             title: "Settings",
             url: `/settings`,
+        },
+        {
+            icon: <FaTwitter size={25} />,
+            title: "Tweet",
+            url: "/tweets",
         },
     ];
 
