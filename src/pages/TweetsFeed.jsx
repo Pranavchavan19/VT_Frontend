@@ -175,6 +175,17 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { timeAgo } from "../helpers/timeAgo";
@@ -239,15 +250,14 @@ function TweetsFeed() {
                 >
                     <div className="w-10">
                         <img
-                            src={tweet.userId?.avatar || avatar2}
+                            src={tweet.owner?.avatar || avatar2} // Use tweet.owner to access avatar
                             className="w-8 h-8 object-cover rounded-full"
                             alt="Avatar"
                         />
                     </div>
                     <div className="w-full flex flex-col gap-1 relative">
                         <div className="flex items-center gap-2">
-                            {/* Display the username */}
-                            <h2 className="text-xs">{tweet.userId?.username || "Anonymous"}</h2>
+                            <h2 className="text-xs">{tweet.owner?.username || "Anonymous"}</h2> {/* Use tweet.owner to access username */}
                             <span className="text-xs text-slate-400">
                                 {timeAgo(tweet.createdAt)}
                             </span>
@@ -281,7 +291,7 @@ function TweetsFeed() {
                         />
 
                         {/* Edit/Delete Options */}
-                        {authUsername === tweet.userId?.username && (
+                        {authUsername === tweet.owner?.username && (
                             <>
                                 <div
                                     className="w-5 h-5 absolute right-0 cursor-pointer"
