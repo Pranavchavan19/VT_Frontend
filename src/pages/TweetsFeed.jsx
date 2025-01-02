@@ -1,25 +1,8 @@
-// import React, { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getAllTweets } from "../Store/Slices/tweetSlice";
-// import { timeAgo } from "../helpers/timeAgo.js"; // Assuming this is defined
-// import { Like, DeleteConfirmation, Edit } from "../components/index.js";
-// import { HiOutlineDotsVertical } from "../components/icons.js";
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { timeAgo } from "../helpers/timeAgo.js";
-import { Like, DeleteConfirmation, Edit } from "../components/index.js";
-import { FaTwitter } from "../components/icons.js";
+import { timeAgo } from "../helpers/timeAgo";
+import { Like, DeleteConfirmation, Edit } from "../components/index";
+import { FaTwitter } from "../components/icons";
 import { getAllTweets, deleteTweet, editTweet } from "../Store/Slices/tweetSlice";
 
 function TweetsFeed() {
@@ -28,16 +11,15 @@ function TweetsFeed() {
     const tweets = useSelector((state) => state.tweet?.tweets); // Fetch tweets from state
     const dispatch = useDispatch();
 
-    // State for handling tweet editing and deleting
+    // Track which tweet is being edited/deleted
     const [editState, setEditState] = useState({
-        editing: false,
+        editingTweetId: null, // track the tweet being edited
         editedContent: "",
-        isOpen: false,
-        delete: false,
-        tweetId: null, // Track which tweet is clicked
+        deleteTweetId: null, // track tweet to be deleted
+        isOpen: false, // for showing options
     });
 
-    // Fetch tweets when component mounts
+    // Fetch all tweets when the component mounts
     useEffect(() => {
         dispatch(getAllTweets());
     }, [dispatch]);
@@ -46,11 +28,9 @@ function TweetsFeed() {
         dispatch(editTweet({ tweetId, content: editedContent }));
         setEditState((prevState) => ({
             ...prevState,
-            editing: false,
-            editedContent,
+            editingTweetId: null, // Reset editing state
+            editedContent: "",
             isOpen: false,
-            delete: false,
-            tweetId: null, // Reset tweetId after editing
         }));
     };
 
@@ -58,10 +38,18 @@ function TweetsFeed() {
         dispatch(deleteTweet(tweetId));
         setEditState((prevState) => ({
             ...prevState,
-            editing: false,
+            deleteTweetId: null, // Reset delete state
             isOpen: false,
-            delete: false,
-            tweetId: null, // Reset tweetId after deleting
+        }));
+    };
+
+    // Function to handle opening the edit/delete options
+    const handleTweetOptions = (tweetId, content) => {
+        setEditState((prevState) => ({
+            ...prevState,
+            isOpen: !prevState.isOpen,
+            editingTweetId: tweetId, // Set the tweet being edited
+            editedContent: content,
         }));
     };
 
@@ -74,29 +62,28 @@ function TweetsFeed() {
                 >
                     <div className="w-10">
                         <img
-                            src={tweet.owner?.avatar || avatar2}  // Ensure avatar is being used here
+                            src={tweet.userId?.avatar || avatar2}
                             className="w-8 h-8 object-cover rounded-full"
                             alt="Avatar"
                         />
                     </div>
                     <div className="w-full flex flex-col gap-1 relative">
                         <div className="flex items-center gap-2">
-                            <h2 className="text-xs">{tweet.owner?.username}</h2>  {/* Make sure username is visible */}
+                            <h2 className="text-xs">{tweet.userId?.username || "Anonymous"}</h2>
                             <span className="text-xs text-slate-400">
                                 {timeAgo(tweet.createdAt)}
                             </span>
                         </div>
 
                         {/* Display tweet content or edit form */}
-                        {editState.editing && editState.tweetId === tweet._id ? (
+                        {editState.editingTweetId === tweet._id ? (
                             <Edit
                                 initialContent={editState.editedContent}
                                 onCancel={() =>
                                     setEditState((prevState) => ({
                                         ...prevState,
-                                        editing: false,
+                                        editingTweetId: null,
                                         isOpen: false,
-                                        tweetId: null,
                                     }))
                                 }
                                 onSave={(editedContent) =>
@@ -116,23 +103,16 @@ function TweetsFeed() {
                         />
 
                         {/* Edit/Delete Options */}
-                        {authUsername === tweet.owner?.username && (
+                        {authUsername === tweet.userId?.username && (
                             <>
                                 <div
                                     className="w-5 h-5 absolute right-0 cursor-pointer"
-                                    onClick={() =>
-                                        setEditState((prevState) => ({
-                                            ...prevState,
-                                            isOpen: !prevState.isOpen,
-                                            tweetId: tweet._id, // Set the clicked tweetId
-                                            editedContent: tweet.content, // Set content for editing
-                                        }))
-                                    }
+                                    onClick={() => handleTweetOptions(tweet._id, tweet.content)}
                                 >
                                     <FaTwitter />
                                 </div>
 
-                                {editState.isOpen && editState.tweetId === tweet._id && (
+                                {editState.isOpen && editState.editingTweetId === tweet._id && (
                                     <div className="border bg-[#222222] text-lg border-slate-600 absolute text-center right-5 rounded-xl">
                                         <ul>
                                             <li
@@ -140,7 +120,7 @@ function TweetsFeed() {
                                                 onClick={() =>
                                                     setEditState((prevState) => ({
                                                         ...prevState,
-                                                        editing: !prevState.editing,
+                                                        editingTweetId: tweet._id,
                                                         isOpen: false,
                                                     }))
                                                 }
@@ -152,7 +132,7 @@ function TweetsFeed() {
                                                 onClick={() =>
                                                     setEditState((prevState) => ({
                                                         ...prevState,
-                                                        delete: true,
+                                                        deleteTweetId: tweet._id,
                                                         isOpen: false,
                                                     }))
                                                 }
@@ -166,13 +146,13 @@ function TweetsFeed() {
                         )}
 
                         {/* Delete Confirmation */}
-                        {editState.delete && editState.tweetId === tweet._id && (
+                        {editState.deleteTweetId === tweet._id && (
                             <DeleteConfirmation
                                 tweet={true}
                                 onCancel={() =>
                                     setEditState((prevState) => ({
                                         ...prevState,
-                                        delete: false,
+                                        deleteTweetId: null,
                                     }))
                                 }
                                 onDelete={() => handleDeleteTweet(tweet._id)}
