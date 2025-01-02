@@ -235,9 +235,17 @@ function TweetsFeed() {
     const handleTweetOptions = (tweetId, content) => {
         setEditState({
             ...editState,
-            isOpen: !editState.isOpen,
-            editingTweetId: tweetId, // Set the tweet being edited
-            editedContent: content,  // Prepopulate content for editing
+            isOpen: !editState.isOpen,      // Toggle the options menu
+            editingTweetId: tweetId,       // Set the tweet being edited
+            editedContent: content,        // Prepopulate content for editing
+        });
+    };
+
+    const handleEditOptionClick = () => {
+        setEditState({
+            ...editState,
+            isOpen: false,               // Close options menu
+            editingTweetId: editState.editingTweetId, // Keep tweet being edited
         });
     };
 
@@ -260,7 +268,7 @@ function TweetsFeed() {
                             </span>
                         </div>
 
-                        {/* Display tweet content or edit form */}
+                        {/* Show Edit form only if in editing state */}
                         {editState.editingTweetId === tweet._id ? (
                             <Edit
                                 initialContent={editState.editedContent}
@@ -291,18 +299,13 @@ function TweetsFeed() {
                                     <FaTwitter />
                                 </div>
 
+                                {/* Only show edit/delete options if the tweet is selected for editing */}
                                 {editState.isOpen && editState.editingTweetId === tweet._id && (
                                     <div className="border bg-[#222222] text-lg border-slate-600 absolute text-center right-5 rounded-xl">
                                         <ul>
                                             <li
                                                 className="hover:opacity-50 px-5 cursor-pointer border-b border-slate-600"
-                                                onClick={() =>
-                                                    setEditState({
-                                                        ...editState,
-                                                        editingTweetId: tweet._id,
-                                                        isOpen: false,
-                                                    })
-                                                }
+                                                onClick={handleEditOptionClick} // When 'Edit' is clicked, open the edit form
                                             >
                                                 Edit
                                             </li>
