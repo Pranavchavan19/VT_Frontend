@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTweets } from "../Store/Slices/tweetSlice";
-import { timeAgo } from "../helpers/timeAgo";  // Assuming this is defined
-import { Like, DeleteConfirmation, Edit } from "./index";
+import { timeAgo } from "../helpers/timeAgo.js";  // Assuming this is defined
+import { Like, DeleteConfirmation, Edit } from "../components/index.js";
 import { HiOutlineDotsVertical } from "../components/icons.js";
 
 const TweetsFeed = () => {
