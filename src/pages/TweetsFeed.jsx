@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTweets } from "../Store/Slices/tweetSlice";
-import { timeAgo } from "../helpers/timeAgo.js";  // Assuming this is defined
+import { timeAgo } from "../helpers/timeAgo.js"; // Assuming this is defined
 import { Like, DeleteConfirmation, Edit } from "../components/index.js";
 import { HiOutlineDotsVertical } from "../components/icons.js";
 
 const TweetsFeed = () => {
     const dispatch = useDispatch();
     const { tweets, loading } = useSelector((state) => state.tweet);
-    const avatar2 = useSelector((state) => state.user?.profileData?.avatar.url);  // Fallback avatar from user profile
+
+    // Fallback avatar if user profile data is unavailable
+    const defaultAvatar = "https://via.placeholder.com/32"; // Replace with a proper fallback image
+    const avatar2 = useSelector(
+        (state) => state.user?.profileData?.avatar?.url || defaultAvatar
+    );
+
     const [editState, setEditState] = useState({
         editing: false,
         editedContent: "",
@@ -23,35 +29,44 @@ const TweetsFeed = () => {
     if (loading) return <div>Loading...</div>; // Simple loading state
 
     return (
-        <div style={{ padding: '16px' }}>
+        <div style={{ padding: "16px" }}>
             {tweets.map((tweet) => (
-                <div key={tweet.tweetId} style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '16px', 
-                    borderBottom: '1px solid #333', 
-                    padding: '16px' 
-                }}>
+                <div
+                    key={tweet.tweetId}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "16px",
+                        borderBottom: "1px solid #333",
+                        padding: "16px",
+                    }}
+                >
                     {/* Avatar */}
-                    <div style={{ width: '40px' }}>
+                    <div style={{ width: "40px" }}>
                         <img
-                            src={tweet.avatar || avatar2}  // Use tweet avatar or fallback to avatar2
+                            src={tweet.avatar || avatar2} // Use tweet avatar or fallback to avatar2
                             alt="Avatar"
                             style={{
-                                width: '32px',
-                                height: '32px',
-                                objectFit: 'cover',
-                                borderRadius: '50%'
+                                width: "32px",
+                                height: "32px",
+                                objectFit: "cover",
+                                borderRadius: "50%",
                             }}
                         />
                     </div>
 
                     {/* Tweet Content */}
-                    <div style={{ flex: 1, position: 'relative' }}>
+                    <div style={{ flex: 1, position: "relative" }}>
                         {/* Header */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            <h2 style={{ fontSize: '14px' }}>{tweet.username}</h2>
-                            <span style={{ fontSize: '12px', color: '#888' }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "8px",
+                            }}
+                        >
+                            <h2 style={{ fontSize: "14px" }}>{tweet.username}</h2>
+                            <span style={{ fontSize: "12px", color: "#888" }}>
                                 {timeAgo(tweet.createdAt)}
                             </span>
                         </div>
@@ -69,9 +84,19 @@ const TweetsFeed = () => {
 
                         {/* Edit/Delete Options */}
                         {tweet.username === avatar2 && (
-                            <div style={{ position: 'absolute', right: '0', top: '0' }}>
+                            <div
+                                style={{
+                                    position: "absolute",
+                                    right: "0",
+                                    top: "0",
+                                }}
+                            >
                                 <div
-                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                    style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        cursor: "pointer",
+                                    }}
                                     onClick={() =>
                                         setEditState((prevState) => ({
                                             ...prevState,
@@ -84,22 +109,31 @@ const TweetsFeed = () => {
 
                                 {/* Edit/Delete Menu */}
                                 {editState.isOpen && (
-                                    <div 
+                                    <div
                                         style={{
-                                            backgroundColor: '#222',
-                                            color: 'white',
-                                            borderRadius: '8px',
-                                            position: 'absolute',
-                                            right: '5px',
-                                            top: '30px',
-                                            width: '120px',
-                                            padding: '10px',
-                                            textAlign: 'center'
+                                            backgroundColor: "#222",
+                                            color: "white",
+                                            borderRadius: "8px",
+                                            position: "absolute",
+                                            right: "5px",
+                                            top: "30px",
+                                            width: "120px",
+                                            padding: "10px",
+                                            textAlign: "center",
                                         }}
                                     >
-                                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                            <li 
-                                                style={{ padding: '8px', cursor: 'pointer' }}
+                                        <ul
+                                            style={{
+                                                listStyle: "none",
+                                                padding: 0,
+                                                margin: 0,
+                                            }}
+                                        >
+                                            <li
+                                                style={{
+                                                    padding: "8px",
+                                                    cursor: "pointer",
+                                                }}
                                                 onClick={() =>
                                                     setEditState((prevState) => ({
                                                         ...prevState,
@@ -110,8 +144,11 @@ const TweetsFeed = () => {
                                             >
                                                 Edit
                                             </li>
-                                            <li 
-                                                style={{ padding: '8px', cursor: 'pointer' }}
+                                            <li
+                                                style={{
+                                                    padding: "8px",
+                                                    cursor: "pointer",
+                                                }}
                                                 onClick={() =>
                                                     setEditState((prevState) => ({
                                                         ...prevState,
@@ -138,7 +175,9 @@ const TweetsFeed = () => {
                                         delete: false,
                                     }))
                                 }
-                                onDelete={() => {/* handle delete tweet */}}
+                                onDelete={() => {
+                                    // Handle delete tweet logic
+                                }}
                             />
                         )}
                     </div>
