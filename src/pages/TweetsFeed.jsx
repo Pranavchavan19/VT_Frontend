@@ -62,14 +62,14 @@ function TweetsFeed() {
                 >
                     <div className="w-10">
                         <img
-                            src={tweet.userId?.avatar || avatar2}
+                            src={tweet.owner?.avatar || avatar2}
                             className="w-8 h-8 object-cover rounded-full"
                             alt="Avatar"
                         />
                     </div>
                     <div className="w-full flex flex-col gap-1 relative">
                         <div className="flex items-center gap-2">
-                            <h2 className="text-xs">{tweet.userId?.username || "Anonymous"}</h2>
+                            <h2 className="text-xs">{tweet.owner?.username || "Anonymous"}</h2>
                             <span className="text-xs text-slate-400">
                                 {timeAgo(tweet.createdAt)}
                             </span>
@@ -102,8 +102,8 @@ function TweetsFeed() {
                             size={20}
                         />
 
-                        {/* Edit/Delete Options */}
-                        {authUsername === tweet.userId?.username && (
+                        {/* Edit/Delete Options for tweet's owner */}
+                        {authUsername === tweet.owner?.username && (
                             <>
                                 <div
                                     className="w-5 h-5 absolute right-0 cursor-pointer"
@@ -145,7 +145,7 @@ function TweetsFeed() {
                             </>
                         )}
 
-                        {/* Delete Confirmation */}
+                        {/* Delete Confirmation dialog */}
                         {editState.deleteTweetId === tweet._id && (
                             <DeleteConfirmation
                                 tweet={true}
