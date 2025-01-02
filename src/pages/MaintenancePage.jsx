@@ -3,7 +3,7 @@ import React from "react";
 function MaintenancePage() {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-tl from-black via-gray-900 to-gray-800">
-            <div className="text-center px-4 py-5 sm:px-6 sm:py-8 bg-gray-900 rounded-2xl shadow-lg w-full max-w-[330px] sm:max-w-[390px] border border-gray-700">
+            <div className="text-center px-4 py-5 sm:px-6 sm:py-8 bg-gray-900 rounded-2xl shadow-lg w-full max-w-[360px] sm:max-w-[410px] border border-gray-700">
                 <h1 className="text-2xl sm:text-3xl font-bold text-orange-400 mb-4">
                     🚧 Maintenance Mode 🚧
                 </h1>
