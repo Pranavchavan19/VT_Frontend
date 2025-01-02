@@ -9,7 +9,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { timeAgo } from "../helpers/timeAgo.js";
 import { Like, DeleteConfirmation, Edit } from "../components/index.js";
-import { FaTwitter } from "../components/icons.js";
+import { HiOutlineDotsVertical } from "../components/icons.js";
 import { getAllTweets, deleteTweet, editTweet } from "../Store/Slices/tweetSlice";
 
 function TweetsFeed() {
@@ -117,7 +117,7 @@ function TweetsFeed() {
                                         }))
                                     }
                                 >
-                                    <FaTwitter />
+                                    <HiOutlineDotsVertical />
                                 </div>
 
                                 {editState.isOpen && editState.tweetId === tweet.tweetId && (
