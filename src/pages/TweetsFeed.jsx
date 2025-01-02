@@ -20,7 +20,7 @@ function TweetsFeed({
 
       const navigate = useNavigate();
     const profileUpdate = () => {
-        navigate("/Mycontent")
+        navigate("/Channel")
     };
 
     const avatar2 = useSelector((state) => state.user?.profileData?.avatar.url);
