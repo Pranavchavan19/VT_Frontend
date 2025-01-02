@@ -19,6 +19,9 @@ import { MdOutlineSlowMotionVideo } from "react-icons/md";
 import { RxAvatar } from "react-icons/rx";
 import { FaRegEye, FaRegHeart } from "react-icons/fa";
 import { MdOutlineCloudUpload } from "react-icons/md";
+import { FaTwitter } from 'react-icons/fa';
+
+
 
 export {
     IoCloseCircleOutline,
@@ -42,5 +45,6 @@ export {
     RxAvatar,
     FaRegEye,
     FaRegHeart,
-    MdOutlineCloudUpload
+    MdOutlineCloudUpload,
+    FaTwitter
 }

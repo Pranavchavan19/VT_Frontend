@@ -10,7 +10,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { timeAgo } from "../helpers/timeAgo.js";
 import { Like, DeleteConfirmation, Edit } from "../components/index.js";
-import { HiOutlineDotsVertical } from "../components/icons.js";
+import { FaTwitter } from "../components/icons.js";
 import { getAllTweets, deleteTweet, editTweet } from "../Store/Slices/tweetSlice";
 
 
@@ -114,7 +114,7 @@ function TweetsList() {
                                         }))
                                     }
                                 >
-                                    <HiOutlineDotsVertical />
+                                    <FaTwitter />
                                 </div>
 
                                 {editState.isOpen && editState.editedContent === tweet.content && (
