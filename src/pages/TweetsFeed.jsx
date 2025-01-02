@@ -18,6 +18,7 @@ function TweetsFeed({
     isLiked,
 })  {
 
+      const navigate = useNavigate();
     const profileUpdate = () => {
         navigate("/edit-profile")
     };
@@ -79,7 +80,7 @@ function TweetsFeed({
                         <div className="w-10">
                             <img
                                 src={tweet.owner?.avatar?.url || avatar2}  // Fallback to default avatar
-                                className="w-8 h-8 object-cover rounded-full"
+                                className="w-8 h-8 object-cover rounded-full cursor-pointer"
                                 alt="Avatar"
                                 onClick={profileUpdate}
                             />
