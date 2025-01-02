@@ -50,6 +50,11 @@ function Sidebar() {
             title: "Subscriptions",
             url: "/subscriptions",
         },
+        {
+            icon: <TbUserCheck size={25} />,
+            title: "Tweet",
+            url: "/tweets",
+        },
     ];
 
     // const bottomBarItems = [

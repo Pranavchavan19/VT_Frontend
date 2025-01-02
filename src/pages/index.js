@@ -18,6 +18,7 @@ import ChangePasswordPage from "./ChangePasswordPage.jsx";
 import Congratulations from "./Congratulations.jsx";
 import CongratsEditPersonalDetails from "./CongratsEditPersonalDetails.jsx";
 import Welcome from "./Welcome.jsx";
+import TweetsFeed from "./TweetsFeed.jsx";
 export {
     Channel,
     ChannelSubscribers,
@@ -38,5 +39,6 @@ export {
     MaintenancePage,
     Congratulations,
     CongratsEditPersonalDetails,
-    Welcome
+    Welcome,
+    TweetsFeed
 }

@@ -59,6 +59,17 @@ export const getUserTweets = createAsyncThunk( "getUserTweets", async (userId) =
     }
 );
 
+export const getAllTweets = createAsyncThunk("getAllTweets", async () => {
+    try {
+        const response = await axiosInstance.get("/tweet"); // Public API endpoint
+        return response.data.data;
+    } catch (error) {
+        toast.error(error?.response?.data?.error);
+        throw error;
+    }
+});
+
+
 const tweetSlice = createSlice({
     name: "tweet",
     initialState,
@@ -78,6 +89,15 @@ const tweetSlice = createSlice({
         builder.addCase(deleteTweet.fulfilled, (state, action) => {
             state.tweets = state.tweets.filter((tweet) => tweet._id !== action.payload);
         })
+
+        builder.addCase(getAllTweets.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(getAllTweets.fulfilled, (state, action) => {
+            state.loading = false;
+            state.tweets = action.payload;
+        });
+        
     },
 });
 

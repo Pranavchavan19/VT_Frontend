@@ -233,7 +233,8 @@ import {
     MaintenancePage,
     Congratulations,
     CongratsEditPersonalDetails,
-    Welcome
+    Welcome,
+    TweetsFeed
     
 } from "./pages";
 import { EditPersonalInfo, ChangePassword, Layout} from "./components";
@@ -342,6 +343,10 @@ function App() {
                             </AuthLayout>
                         }
                     />
+
+                    
+                 <Route path="/tweets" element={<TweetsFeed />} />
+                    
                      
                            <Route path="/settings" element={<SettingPage />} />
                            <Route path="change-password" element={<ChangePassword />} />
