@@ -16,7 +16,6 @@
 
 
 
-
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { timeAgo } from "../helpers/timeAgo.js";
@@ -76,14 +75,14 @@ function TweetsFeed() {
                 >
                     <div className="w-10">
                         <img
-                            src={tweet.avatar || avatar2}
+                            src={tweet.owner?.avatar || avatar2}  // Ensure avatar is being used here
                             className="w-8 h-8 object-cover rounded-full"
                             alt="Avatar"
                         />
                     </div>
                     <div className="w-full flex flex-col gap-1 relative">
                         <div className="flex items-center gap-2">
-                            <h2 className="text-xs">{tweet.username}</h2>
+                            <h2 className="text-xs">{tweet.owner?.username}</h2>  {/* Make sure username is visible */}
                             <span className="text-xs text-slate-400">
                                 {timeAgo(tweet.createdAt)}
                             </span>
@@ -118,7 +117,7 @@ function TweetsFeed() {
                         />
 
                         {/* Edit/Delete Options */}
-                        {authUsername === tweet.username && (
+                        {authUsername === tweet.owner?.username && (
                             <>
                                 <div
                                     className="w-5 h-5 absolute right-0 cursor-pointer"
