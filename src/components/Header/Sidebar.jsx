@@ -8,6 +8,7 @@ import {
     IoFolderOutline,
     RiHome6Line,
     TbUserCheck,
+    FaTwitter
 } from "../icons.js";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -51,7 +52,7 @@ function Sidebar() {
             url: "/subscriptions",
         },
         {
-            icon: <TbUserCheck size={25} />,
+            icon: <FaTwitter size={25} />,
             title: "Tweet",
             url: "/tweets",
         },
