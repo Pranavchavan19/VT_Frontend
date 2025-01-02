@@ -6,7 +6,6 @@ import { timeAgo } from "../helpers/timeAgo";  // Helper for time formatting
 import { Like, DeleteConfirmation, Edit } from "../components/index";
 import { HiOutlineDotsVertical } from "../components/icons";
 import { getAllTweets, deleteTweet, editTweet } from "../Store/Slices/tweetSlice";
-import { useNavigate } from "react-router-dom";
 
 function TweetsFeed({
     tweetId,
@@ -18,10 +17,6 @@ function TweetsFeed({
     isLiked,
 })  {
 
-      const navigate = useNavigate();
-    const profileUpdate = () => {
-        navigate("/channel/:username")
-    };
 
     const avatar2 = useSelector((state) => state.user?.profileData?.avatar.url);
     const authUsername = useSelector((state) => state.auth?.userData?.username);
@@ -82,7 +77,7 @@ function TweetsFeed({
                                 src={tweet.owner?.avatar?.url || avatar2}  // Fallback to default avatar
                                 className="w-8 h-8 object-cover rounded-full cursor-pointer"
                                 alt="Avatar"
-                                onClick={profileUpdate}
+                                
                             />
                         </div>
                         <div className="w-full flex flex-col gap-1 relative">
