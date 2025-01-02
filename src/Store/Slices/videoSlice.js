@@ -4,7 +4,6 @@ import axiosInstance from "../../helpers/axiosInstance";
 import toast from "react-hot-toast";
 import { BASE_URL } from "../../Constants.js";
 
-
 const initialState = {
     loading: false,
     uploading: false,
@@ -24,14 +23,12 @@ export const getAllVideos = createAsyncThunk(
             const url = new URL(`${BASE_URL}/video`);
 
             if (userId) url.searchParams.set("userId", userId);
-            // if (query) url.searchParams.set("query", query);
             if (page) url.searchParams.set("page", page);
             if (limit) url.searchParams.set("limit", limit);
             if (sortBy && sortType) {
                 url.searchParams.set("sortBy", sortBy);
                 url.searchParams.set("sortType", sortType);
             }
-            
 
             const response = await axiosInstance.get(url);
 
@@ -39,7 +36,7 @@ export const getAllVideos = createAsyncThunk(
         } catch (error) {
             toast.error(error?.response?.data?.error);
             console.log(error);
-            
+
             throw error;
         }
     }
@@ -99,7 +96,7 @@ export const deleteAVideo = createAsyncThunk(
 );
 
 export const getVideoById = createAsyncThunk(
-    "getVideoById",  
+    "getVideoById",
     async ({ videoId }) => {
         try {
             const response = await axiosInstance.get(`/video/v/${videoId}`);
@@ -145,7 +142,13 @@ const videoSlice = createSlice({
         });
         builder.addCase(getAllVideos.fulfilled, (state, action) => {
             state.loading = false;
-            state.videos.docs = [...state.videos.docs, ...action.payload.docs];
+            // Filter out duplicate videos based on video ID
+            const newVideos = action.payload.docs.filter(
+                (newVideo) =>
+                    !state.videos.docs.some((existingVideo) => existingVideo.id === newVideo.id)
+            );
+            // Append only unique videos
+            state.videos.docs = [...state.videos.docs, ...newVideos];
             state.videos.hasNextPage = action.payload.hasNextPage;
         });
         builder.addCase(publishAvideo.pending, (state) => {
