@@ -77,7 +77,7 @@ function TweetsFeed() {
                             </span>
                         </div>
 
-                        {/* Display tweet content or edit form */}
+                        {/* Display tweet content or edit form
                         {editState.editingTweetId === tweet._id ? (
                             <Edit
                                 initialContent={editState.editedContent}
@@ -88,7 +88,23 @@ function TweetsFeed() {
                             />
                         ) : (
                             <p>{tweet.content}</p>
-                        )}
+                        )} */}
+
+                         {editState.editing ? (
+                           <Edit
+                                 initialContent={editState.editedContent}
+                                 onCancel={() =>
+                                 setEditState((prevState) => ({
+                                 ...prevState,
+                                 editing: false,
+                                 isOpen: false,
+                                 }))
+                                 }
+                                  onSave={handleEditTweet}
+                            />
+                            ) : (
+                            <p>{editState.editedContent}</p>
+                             )}
 
                         {/* Like the tweet */}
                         <Like
