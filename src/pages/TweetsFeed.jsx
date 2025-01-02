@@ -14,7 +14,7 @@ import { FaTwitter } from "../components/icons.js";
 import { getAllTweets, deleteTweet, editTweet } from "../Store/Slices/tweetSlice";
 
 
-function TweetsList() {
+function TweetsFeed() {
     const avatar2 = useSelector((state) => state.user?.profileData?.avatar?.url);
     const authUsername = useSelector((state) => state.auth?.userData?.username);
     const tweets = useSelector((state) => state.tweet?.tweets); // Fetch tweets from state
@@ -170,4 +170,4 @@ function TweetsList() {
     );
 }
 
-export default TweetsList;
+export default TweetsFeed;
