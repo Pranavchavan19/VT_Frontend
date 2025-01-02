@@ -13,15 +13,8 @@ import { Like, DeleteConfirmation, Edit } from "../components/index.js";
 import { HiOutlineDotsVertical } from "../components/icons.js";
 import { getAllTweets, deleteTweet, editTweet } from "../Store/Slices/tweetSlice";
 
-function TweetsList({
-    tweetId,
-    avatar,
-    username,
-    createdAt,
-    content,
-    likesCount = 0,
-    isLiked,
-}) {
+
+function TweetsList() {
     const avatar2 = useSelector((state) => state.user?.profileData?.avatar?.url);
     const authUsername = useSelector((state) => state.auth?.userData?.username);
     const tweets = useSelector((state) => state.tweet?.tweets); // Fetch tweets from state
@@ -29,17 +22,16 @@ function TweetsList({
 
     const [editState, setEditState] = useState({
         editing: false,
-        editedContent: content,
+        editedContent: "",
         isOpen: false,
         delete: false,
     });
 
-    // Fetch all tweets on component mount
     useEffect(() => {
         dispatch(getAllTweets());
     }, [dispatch]);
 
-    const handleEditTweet = (editedContent) => {
+    const handleEditTweet = (tweetId, editedContent) => {
         dispatch(editTweet({ tweetId, content: editedContent }));
         setEditState((prevState) => ({
             ...prevState,
@@ -50,7 +42,7 @@ function TweetsList({
         }));
     };
 
-    const handleDeleteTweet = () => {
+    const handleDeleteTweet = (tweetId) => {
         dispatch(deleteTweet(tweetId));
         setEditState((prevState) => ({
             ...prevState,
@@ -83,7 +75,7 @@ function TweetsList({
                         </div>
 
                         {/* Display tweet content or edit form */}
-                        {editState.editing && tweetId === tweet.tweetId ? (
+                        {editState.editing && editState.editedContent === tweet.content ? (
                             <Edit
                                 initialContent={editState.editedContent}
                                 onCancel={() =>
@@ -93,10 +85,12 @@ function TweetsList({
                                         isOpen: false,
                                     }))
                                 }
-                                onSave={handleEditTweet}
+                                onSave={(editedContent) =>
+                                    handleEditTweet(tweet.tweetId, editedContent)
+                                }
                             />
                         ) : (
-                            <p>{editState.editedContent}</p>
+                            <p>{tweet.content}</p> // Ensure this field exists in the tweets array
                         )}
 
                         {/* Like the tweet */}
@@ -116,13 +110,14 @@ function TweetsList({
                                         setEditState((prevState) => ({
                                             ...prevState,
                                             isOpen: !prevState.isOpen,
+                                            editedContent: tweet.content,
                                         }))
                                     }
                                 >
                                     <HiOutlineDotsVertical />
                                 </div>
 
-                                {editState.isOpen && tweetId === tweet.tweetId && (
+                                {editState.isOpen && editState.editedContent === tweet.content && (
                                     <div className="border bg-[#222222] text-lg border-slate-600 absolute text-center right-5 rounded-xl">
                                         <ul>
                                             <li
@@ -156,7 +151,7 @@ function TweetsList({
                         )}
 
                         {/* Delete Confirmation */}
-                        {editState.delete && tweetId === tweet.tweetId && (
+                        {editState.delete && editState.editedContent === tweet.content && (
                             <DeleteConfirmation
                                 tweet={true}
                                 onCancel={() =>
@@ -165,7 +160,7 @@ function TweetsList({
                                         delete: false,
                                     }))
                                 }
-                                onDelete={handleDeleteTweet}
+                                onDelete={() => handleDeleteTweet(tweet.tweetId)}
                             />
                         )}
                     </div>
