@@ -1,121 +1,151 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllTweets } from "../Store/Slices/tweetSlice";
+import { timeAgo } from "../helpers/timeAgo";  // Assuming this is defined
+import { Like, DeleteConfirmation, Edit } from "./index";
+import { HiOutlineDotsVertical } from "./icons";
 
 const TweetsFeed = () => {
     const dispatch = useDispatch();
     const { tweets, loading } = useSelector((state) => state.tweet);
+    const avatar2 = useSelector((state) => state.user?.profileData?.avatar.url);  // Fallback avatar from user profile
+    const [editState, setEditState] = useState({
+        editing: false,
+        editedContent: "",
+        isOpen: false,
+        delete: false,
+    });
 
     useEffect(() => {
         dispatch(getAllTweets());
     }, [dispatch]);
 
+    if (loading) return <div>Loading...</div>; // Simple loading state
+
     return (
-        <div className="text-white w-full flex justify-start items-center sm:gap-5 gap-3 border-b border-slate-600 p-3 sm:p-5">
-            <div className="w-10">
-                <img
-                    src={avatar || avatar2}
-                    className="w-8 h-8 object-cover rounded-full"
-                    alt="Avatar"
-                />
-            </div>
-            <div className="w-full flex flex-col gap-1 relative">
-                <div className="flex items-center gap-2">
-                    <h2 className="text-xs">{username}</h2>
-                    <span className="text-xs text-slate-400">
-                        {timeAgo(createdAt)}
-                    </span>
-                </div>
+        <div style={{ padding: '16px' }}>
+            {tweets.map((tweet) => (
+                <div key={tweet.tweetId} style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '16px', 
+                    borderBottom: '1px solid #333', 
+                    padding: '16px' 
+                }}>
+                    {/* Avatar */}
+                    <div style={{ width: '40px' }}>
+                        <img
+                            src={tweet.avatar || avatar2}  // Use tweet avatar or fallback to avatar2
+                            alt="Avatar"
+                            style={{
+                                width: '32px',
+                                height: '32px',
+                                objectFit: 'cover',
+                                borderRadius: '50%'
+                            }}
+                        />
+                    </div>
 
-                {/* Display tweet content or edit form */}
-                {editState.editing ? (
-                    <Edit
-                        initialContent={editState.editedContent}
-                        onCancel={() =>
-                            setEditState((prevState) => ({
-                                ...prevState,
-                                editing: false,
-                                isOpen: false,
-                            }))
-                        }
-                        onSave={handleEditTweet}
-                    />
-                ) : (
-                    <p>{editState.editedContent}</p>
-                )}
-
-                {/* Like the tweet */}
-                <Like
-                    isLiked={isLiked}
-                    likesCount={likesCount}
-                    tweetId={tweetId}
-                    size={20}
-                />
-
-                {/* Edit/Delete Options */}
-                {authUsername === username && (
-                    <>
-                        <div
-                            className="w-5 h-5 absolute right-0 cursor-pointer"
-                            onClick={() =>
-                                setEditState((prevState) => ({
-                                    ...prevState,
-                                    isOpen: !prevState.isOpen,
-                                }))
-                            }
-                        >
-                            <HiOutlineDotsVertical />
+                    {/* Tweet Content */}
+                    <div style={{ flex: 1, position: 'relative' }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <h2 style={{ fontSize: '14px' }}>{tweet.username}</h2>
+                            <span style={{ fontSize: '12px', color: '#888' }}>
+                                {timeAgo(tweet.createdAt)}
+                            </span>
                         </div>
 
-                        {editState.isOpen && (
-                            <div className="border bg-[#222222] text-lg border-slate-600 absolute text-center right-5 rounded-xl">
-                                <ul>
-                                    <li
-                                        className="hover:opacity-50 px-5 cursor-pointer border-b border-slate-600"
-                                        onClick={() =>
-                                            setEditState((prevState) => ({
-                                                ...prevState,
-                                                editing: !prevState.editing,
-                                                isOpen: false,
-                                            }))
-                                        }
+                        {/* Display tweet content */}
+                        <p>{tweet.content}</p>
+
+                        {/* Like the tweet */}
+                        <Like
+                            isLiked={tweet.isLiked}
+                            likesCount={tweet.likesCount}
+                            tweetId={tweet.tweetId}
+                            size={20}
+                        />
+
+                        {/* Edit/Delete Options */}
+                        {tweet.username === avatar2 && (
+                            <div style={{ position: 'absolute', right: '0', top: '0' }}>
+                                <div
+                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                    onClick={() =>
+                                        setEditState((prevState) => ({
+                                            ...prevState,
+                                            isOpen: !prevState.isOpen,
+                                        }))
+                                    }
+                                >
+                                    <HiOutlineDotsVertical />
+                                </div>
+
+                                {/* Edit/Delete Menu */}
+                                {editState.isOpen && (
+                                    <div 
+                                        style={{
+                                            backgroundColor: '#222',
+                                            color: 'white',
+                                            borderRadius: '8px',
+                                            position: 'absolute',
+                                            right: '5px',
+                                            top: '30px',
+                                            width: '120px',
+                                            padding: '10px',
+                                            textAlign: 'center'
+                                        }}
                                     >
-                                        Edit
-                                    </li>
-                                    <li
-                                        className="px-5 hover:opacity-50 cursor-pointer"
-                                        onClick={() =>
-                                            setEditState((prevState) => ({
-                                                ...prevState,
-                                                delete: true,
-                                                isOpen: false,
-                                            }))
-                                        }
-                                    >
-                                        Delete
-                                    </li>
-                                </ul>
+                                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                            <li 
+                                                style={{ padding: '8px', cursor: 'pointer' }}
+                                                onClick={() =>
+                                                    setEditState((prevState) => ({
+                                                        ...prevState,
+                                                        editing: !prevState.editing,
+                                                        isOpen: false,
+                                                    }))
+                                                }
+                                            >
+                                                Edit
+                                            </li>
+                                            <li 
+                                                style={{ padding: '8px', cursor: 'pointer' }}
+                                                onClick={() =>
+                                                    setEditState((prevState) => ({
+                                                        ...prevState,
+                                                        delete: true,
+                                                        isOpen: false,
+                                                    }))
+                                                }
+                                            >
+                                                Delete
+                                            </li>
+                                        </ul>
+                                    </div>
+                                )}
                             </div>
                         )}
-                    </>
-                )}
 
-                {/* Delete Confirmation */}
-                {editState.delete && (
-                    <DeleteConfirmation
-                        tweet={true}
-                        onCancel={() =>
-                            setEditState((prevState) => ({
-                                ...prevState,
-                                delete: false,
-                            }))
-                        }
-                        onDelete={handleDeleteTweet}
-                    />
-                )}
-            </div>
+                        {/* Delete Confirmation */}
+                        {editState.delete && (
+                            <DeleteConfirmation
+                                tweet={true}
+                                onCancel={() =>
+                                    setEditState((prevState) => ({
+                                        ...prevState,
+                                        delete: false,
+                                    }))
+                                }
+                                onDelete={() => {/* handle delete tweet */}}
+                            />
+                        )}
+                    </div>
+                </div>
+            ))}
         </div>
     );
-}
+};
 
 export default TweetsFeed;
