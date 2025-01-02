@@ -357,6 +357,9 @@
 
 
 
+
+
+
 import React, { useState, useEffect } from "react";
 import { FaTwitter } from "react-icons/fa";  // Assuming you are using react-icons
 
@@ -380,23 +383,45 @@ const TweetsFeed = () => {
         fetchTweets();
     }, []);
 
-    const handleEditTweet = (tweetId, editedContent) => {
-        // Dispatch your edit tweet action here
-        setEditState((prevState) => ({
-            ...prevState,
-            editingTweetId: null, // Reset editing state
-            editedContent: "",
-            isOpen: false,
-        }));
+    const handleEditTweet = async (tweetId, editedContent) => {
+        try {
+            // Implement your edit API call here
+            const response = await fetch(`/api/v1/tweet/${tweetId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ content: editedContent }),
+            });
+
+            if (response.ok) {
+                const updatedTweet = await response.json();
+                setTweets((prevTweets) =>
+                    prevTweets.map((tweet) =>
+                        tweet._id === updatedTweet._id ? updatedTweet : tweet
+                    )
+                );
+                setEditState({ ...editState, editingTweetId: null, isOpen: false, editedContent: "" });
+            }
+        } catch (error) {
+            console.error("Error editing tweet:", error);
+        }
     };
 
-    const handleDeleteTweet = (tweetId) => {
-        // Dispatch your delete tweet action here
-        setEditState((prevState) => ({
-            ...prevState,
-            deleteTweetId: null, // Reset delete state
-            isOpen: false,
-        }));
+    const handleDeleteTweet = async (tweetId) => {
+        try {
+            // Implement your delete API call here
+            const response = await fetch(`/api/v1/tweet/${tweetId}`, {
+                method: "DELETE",
+            });
+
+            if (response.ok) {
+                setTweets(tweets.filter((tweet) => tweet._id !== tweetId));
+                setEditState({ ...editState, deleteTweetId: null, isOpen: false });
+            }
+        } catch (error) {
+            console.error("Error deleting tweet:", error);
+        }
     };
 
     const handleTweetOptions = (tweetId, content) => {
