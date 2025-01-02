@@ -61,8 +61,6 @@ function TweetsFeed() {
                     className="w-full flex justify-start items-center sm:gap-5 gap-3 border-b border-slate-600 p-3 sm:p-5"
                 >
                     <div className="w-10">
-                        {/* Debugging log to ensure the avatar is being fetched correctly */}
-                        {console.log('User avatar:', tweet.userId?.avatar || avatar2)}
                         <img
                             src={tweet.userId?.avatar || avatar2}
                             className="w-8 h-8 object-cover rounded-full"
@@ -71,6 +69,7 @@ function TweetsFeed() {
                     </div>
                     <div className="w-full flex flex-col gap-1 relative">
                         <div className="flex items-center gap-2">
+                            {/* Display the username here */}
                             <h2 className="text-xs">{tweet.userId?.username || "Anonymous"}</h2>
                             <span className="text-xs text-slate-400">
                                 {timeAgo(tweet.createdAt)}
