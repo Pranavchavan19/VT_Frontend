@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LoginSkeleton from "../skeleton/loginSkeleton.jsx";
 import GetImagePreview from "./GetImagePreview.jsx";
+import toast from "react-hot-toast";
 
 function SignUp() {
     const {
@@ -25,6 +26,7 @@ function SignUp() {
         // If coverImage is required but not provided
         if (!data.coverImage) {
             setError("coverImage", { message: "Cover image is required" });
+            toast.error("CoverImage is requied !!!")
             return;
         } else {
             clearErrors("coverImage");
@@ -33,6 +35,7 @@ function SignUp() {
         // If avatar is required but not provided
         if (!data.avatar) {
             setError("avatar", { message: "Avatar is required" });
+            toast.error("Avatar is requied !!!")
             return;
         } else {
             clearErrors("avatar");
